@@ -2,9 +2,11 @@ package com.bank.services;
 
 import com.bank.interfaces.ITransactionOperations;
 import com.bank.models.Account;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.bank.exceptions.AccountInactiveException;
+import com.bank.exceptions.InsufficientFundException;
 
 public class BankService implements ITransactionOperations {
 
@@ -39,7 +41,12 @@ public class BankService implements ITransactionOperations {
     public void withdraw(String accountNumber, double amount) {
         Account account = findAccount(accountNumber);
         if (account != null){
-            account.withdraw(amount);
+            try{
+                account.withdraw(amount);
+            } catch (InsufficientFundException | AccountInactiveException e){
+                System.out.println(e.getMessage());
+            }
+
         }
     }
 
@@ -48,8 +55,12 @@ public class BankService implements ITransactionOperations {
         Account fromAccount = findAccount(fromAccountNumber);
         Account toAccount = findAccount(toAccountNumber);
         if (fromAccount != null && toAccount != null){
-            fromAccount.withdraw(amount);
-            toAccount.deposit(amount);
+            try {
+                fromAccount.withdraw(amount);
+                toAccount.deposit(amount);
+            } catch(InsufficientFundException | AccountInactiveException e) {
+                System.out.println(e.getMessage());
+            }
         }
 
     }

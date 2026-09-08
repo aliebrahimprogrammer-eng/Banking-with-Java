@@ -1,5 +1,8 @@
 package com.bank.models;
 
+import com.bank.exceptions.AccountInactiveException;
+import com.bank.exceptions.InsufficientFundException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,11 +11,15 @@ public abstract class Account {
     private final String accountNumber;
     private double balance;
     private List<Transaction> transactionsList;
+    private boolean active;
+    private int overdraftCount;
 
     public Account(String accountNumber, double balance) {
         this.accountNumber = accountNumber;
         this.balance = balance;
         this.transactionsList = new ArrayList<>();
+        this.active = true;
+        this.overdraftCount = 0;
     }
 
     public String getAccountNumber() {
@@ -31,7 +38,23 @@ public abstract class Account {
         return transactionsList;
     }
 
-    public abstract void withdraw(double amount);
+    public boolean isActive(){
+        return active;
+    }
+
+    public int getOverdraftCount(){
+        return overdraftCount;
+    }
+
+    protected void setActive(boolean active){
+        this.active = active;
+    }
+
+    protected void increaseOverdraftCount(){
+        overdraftCount++;
+    }
+
+    public abstract void withdraw(double amount) throws InsufficientFundException,AccountInactiveException;
 
     public void deposit(double amount){
         balance += amount;
@@ -42,6 +65,18 @@ public abstract class Account {
         transactionsList.add(transaction);
     }
 
+    public void processOverdraft(double amount){
+        double overdraftFee = 35;
 
+        setBalance( getBalance() - amount - overdraftFee);
+        overdraftCount++;
+
+        addTransaction(new Transaction(amount,"Overdraft"));
+        addTransaction(new Transaction(overdraftFee,"Overdraft Fee"));
+
+        if(getOverdraftCount() >= 2){
+            setActive(false);
+        }
+    }
 
 }
