@@ -3,6 +3,7 @@ package com.bank;
 import com.bank.models.CheckingAccount;
 import com.bank.models.Customer;
 import com.bank.models.SavingsAccount;
+import com.bank.models.Transaction;
 
 public class Main {
     public static void main(String[] args){
@@ -19,6 +20,11 @@ public class Main {
         System.out.println(customer.getSavingsAccount().getBalance());
 
         customer.getCheckingAccount().withdraw(10);
+        customer.getCheckingAccount().withdraw(50);
+        customer.getCheckingAccount().withdraw(40);
+        customer.getCheckingAccount().withdraw(20);
+        customer.getCheckingAccount().deposit(100);
+        customer.getCheckingAccount().deposit(1000);
         System.out.println(customer.getCheckingAccount().getBalance());
 
 
@@ -27,7 +33,11 @@ public class Main {
 
         System.out.println(customer.getSavingsAccount().getBalance() + customer.getCheckingAccount().getBalance());
 
-        System.out.println();
+        for (Transaction transaction : customer.getCheckingAccount().getTransactionsList()){
+            System.out.println(transaction.getAmount());
+            System.out.println(transaction.getType());
+            System.out.println(transaction.getDate());
+        }
 
     }
 }

@@ -10,6 +10,7 @@ public class CheckingAccount extends Account{
     public void withdraw(double amount) {
         if(amount <= getBalance()){
             setBalance(getBalance()-amount);
+            addTransaction(new Transaction(amount,"Withdraw"));
         }
     }
 }
