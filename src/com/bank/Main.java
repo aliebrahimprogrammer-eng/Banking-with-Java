@@ -34,19 +34,25 @@ public class Main {
         System.out.println(customer.getSavingsAccount().getBalance());
         System.out.println(customer.getSavingsAccount().getBalance() + customer.getCheckingAccount().getBalance());
         */
-
+        System.out.println("-----------------------------------");
         bankService.withdraw(cAccount.getAccountNumber(),-40);
         System.out.println(cAccount.getBalance());
+        System.out.println("-----------------------------------");
         bankService.withdraw(cAccount.getAccountNumber(),400);
         System.out.println(cAccount.getBalance());
+        System.out.println("-----------------------------------");
         bankService.withdraw(cAccount.getAccountNumber(),500);
-        System.out.println(cAccount.getBalance());
-        bankService.withdraw(cAccount.getAccountNumber(),500);
-        bankService.deposit(cAccount.getAccountNumber(),590);
-        bankService.deposit(cAccount.getAccountNumber(),450);
         System.out.println(cAccount.getBalance());
         System.out.println("-----------------------------------");
-        bankService.transfer(cAccount.getAccountNumber(),sAccount.getAccountNumber(),10000);
+        bankService.withdraw(cAccount.getAccountNumber(),10);
+        System.out.println(cAccount.getBalance());
+        System.out.println("-----------------------------------");
+        bankService.deposit(cAccount.getAccountNumber(),590);
+        bankService.deposit(cAccount.getAccountNumber(),10);
+        System.out.println("-----------------------------------");
+        System.out.println(cAccount.getBalance());
+        System.out.println("-----------------------------------");
+        bankService.transfer(cAccount.getAccountNumber(),sAccount.getAccountNumber(),10);
         System.out.println(cAccount.getBalance());
         System.out.println(sAccount.getBalance());
         System.out.println("-----------------------------------");

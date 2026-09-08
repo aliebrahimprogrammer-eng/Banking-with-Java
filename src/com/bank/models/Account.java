@@ -65,18 +65,34 @@ public abstract class Account {
         transactionsList.add(transaction);
     }
 
-    public void processOverdraft(double amount){
+    public void processOverdraft(double amount) throws InsufficientFundException{
         double overdraftFee = 35;
+        boolean isNegative = getBalance() >= 0 ? false : true;
 
-        setBalance( getBalance() - amount - overdraftFee);
-        overdraftCount++;
+        if (!isNegative) {
+            setBalance( getBalance() - amount - overdraftFee);
+            overdraftCount++;
+            addTransaction(new Transaction(amount,"Overdraft"));
+            addTransaction(new Transaction(overdraftFee,"Overdraft Fee"));
 
-        addTransaction(new Transaction(amount,"Overdraft"));
-        addTransaction(new Transaction(overdraftFee,"Overdraft Fee"));
+            if(getOverdraftCount() >= 2){
+                setActive(false);
+            }
+        }else{
+            if (amount > 100){
+                throw new InsufficientFundException("Your balance is already negative, amount must not be more than 100$.");
+            }else{
+                setBalance( getBalance() - amount - overdraftFee);
+                overdraftCount++;
+                addTransaction(new Transaction(amount,"Overdraft"));
+                addTransaction(new Transaction(overdraftFee,"Overdraft Fee"));
 
-        if(getOverdraftCount() >= 2){
-            setActive(false);
+                if(getOverdraftCount() >= 2){
+                    setActive(false);
+                }
+            }
         }
+
     }
 
 }
