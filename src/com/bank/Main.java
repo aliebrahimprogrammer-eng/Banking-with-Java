@@ -1,9 +1,6 @@
 package com.bank;
 
-import com.bank.models.CheckingAccount;
-import com.bank.models.Customer;
-import com.bank.models.SavingsAccount;
-import com.bank.models.Transaction;
+import com.bank.models.*;
 import com.bank.services.BankService;
 
 public class Main {
@@ -11,7 +8,8 @@ public class Main {
 
         BankService bankService = new BankService();
 
-        Customer customer = new Customer("123456789D","Ali Ebrahim");
+        Customer customer = new Customer("123456789D","Ali Ebrahim","password123");
+        Banker banker = new Banker("897645321","Ahmed Hani","qwerty123");
         CheckingAccount cAccount = new CheckingAccount("54321",300);
         SavingsAccount sAccount = new SavingsAccount("12345",200);
 

@@ -1,36 +1,17 @@
 package com.bank.models;
 
-public class Customer {
+public class Customer extends User {
 
     //customer properties
-    private String customerId;
-    private String name;
     private CheckingAccount checkingAccount;
     private SavingsAccount savingsAccount;
 
     //constructor
-    public Customer(String customerId,String name){
-        this.customerId = customerId;
-        this.name = name;
+    public Customer(String customerId, String name, String password) {
+        super(customerId, name, password);
     }
 
     //getters and setters
-    public String getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public CheckingAccount getCheckingAccount() {
         return checkingAccount;
     }
