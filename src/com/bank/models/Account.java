@@ -71,7 +71,7 @@ public abstract class Account {
 
         if (!isNegative) {
             setBalance( getBalance() - amount - overdraftFee);
-            overdraftCount++;
+            increaseOverdraftCount();
             addTransaction(new Transaction(amount,"Overdraft"));
             addTransaction(new Transaction(overdraftFee,"Overdraft Fee"));
 
@@ -83,7 +83,7 @@ public abstract class Account {
                 throw new InsufficientFundException("Your balance is already negative, amount must not be more than 100$.");
             }else{
                 setBalance( getBalance() - amount - overdraftFee);
-                overdraftCount++;
+                increaseOverdraftCount();
                 addTransaction(new Transaction(amount,"Overdraft"));
                 addTransaction(new Transaction(overdraftFee,"Overdraft Fee"));
 
