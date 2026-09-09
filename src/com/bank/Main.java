@@ -2,6 +2,7 @@ package com.bank;
 
 import com.bank.models.*;
 import com.bank.services.BankService;
+import com.bank.services.CustomerService;
 import com.bank.services.FileService;
 
 public class Main {
@@ -67,10 +68,13 @@ public class Main {
         System.out.println("-----------------------------------");
 
         FileService fileService = new FileService();
-        fileService.saveCustomer(customer.getCustomerId(), customer.getName(),customer.getPassword());
-        System.out.println("Customers saved.");
-        System.out.println("-----------------------------------");
-        fileService.readCustomer();
+        //fileService.saveCustomer(customer.getCustomerId(), customer.getName(),customer.getPassword());
+        //System.out.println("Customers saved.");
+        //System.out.println("-----------------------------------");
+        //fileService.readCustomer();
 
+        CustomerService customerService = new CustomerService();
+        Customer customer2 = customerService.createCustomer("f3214","Fatima Ali","comingsoon123");
+        fileService.readCustomer();
     }
 }
