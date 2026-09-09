@@ -74,7 +74,11 @@ public class Main {
         //fileService.readCustomer();
 
         CustomerService customerService = new CustomerService();
-        Customer customer2 = customerService.createCustomer("f3214","Fatima Ali","comingsoon123");
+        Customer customer2 = customerService.createCustomer("h3214","Fatima Ali","comingsoon123");
+        customerService.addCheckingAccount(customer2,"abcd1234",30);
+        customerService.addSavingAccount(customer2,"abcd1234",60);
         fileService.readCustomer();
+        System.out.println(customer2.getSavingsAccount().getBalance());
+        System.out.println(customer2.getCheckingAccount().getBalance());
     }
 }
