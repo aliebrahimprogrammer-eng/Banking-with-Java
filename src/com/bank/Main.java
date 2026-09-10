@@ -77,7 +77,7 @@ public class Main {
         //fileService.readCustomer();
 
         CustomerService customerService = new CustomerService();
-        Customer customer2 = customerService.createCustomer("h3214","Fatima Ali","comingsoon123");
+        //Customer customer2 = customerService.createCustomer("g2345","Ali Hasan","whodiz123");
         /*Customer customer2 = customerService.createCustomer("h3214","Fatima Ali","comingsoon123");
         customerService.addCheckingAccount(customer2,"abcd1234",30);
         customerService.addSavingAccount(customer2,"abcd1234",60);
@@ -108,16 +108,21 @@ public class Main {
 
         LoginService loginService = new LoginService();
         User loggedIn1 = loginService.login("h3214","comingsoon1234");
+        User loggedIn12 = loginService.login("h3214","comingsoon1234");
+        User loggedIn13 = loginService.login("h3214","comingsoon1234");
+        User loggedIn14 = loginService.login("h3214","comingsoon1234");
+        User loggedIn15 = loginService.login("h3214","comingsoon1234");
         User loggedIn2 = loginService.login("h3214","comingsoon123");
-        if(loggedIn1 != null){
-            if(loggedIn2 instanceof Customer){
+        User loggedIn22 = loginService.login("h32d14","comingsoon123");
+        User loggedIn23 = loginService.login("g2345","whodiz123");
+        //User loggedIn233 = loginService.login("g2345","whoddiz123");
+        if(loggedIn23 != null) {
+            if (loggedIn23 instanceof Customer) {
                 System.out.println("Welcome Customer");
             }
-            if(loggedIn2 instanceof Banker){
+            if (loggedIn23 instanceof Banker) {
                 System.out.println("Welcome Banker");
             }
-        }else{
-            System.out.println("Invalid Login");
         }
         if(loggedIn2 != null){
             if(loggedIn2 instanceof Customer){
@@ -126,8 +131,6 @@ public class Main {
             if(loggedIn2 instanceof Banker){
                 System.out.println("Welcome Banker");
             }
-        }else{
-            System.out.println("Invalid Login");
         }
 
     }
