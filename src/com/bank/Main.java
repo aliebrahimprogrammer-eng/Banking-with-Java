@@ -77,6 +77,7 @@ public class Main {
         //fileService.readCustomer();
 
         CustomerService customerService = new CustomerService();
+        Customer customer2 = customerService.createCustomer("h3214","Fatima Ali","comingsoon123");
         /*Customer customer2 = customerService.createCustomer("h3214","Fatima Ali","comingsoon123");
         customerService.addCheckingAccount(customer2,"abcd1234",30);
         customerService.addSavingAccount(customer2,"abcd1234",60);
@@ -106,8 +107,8 @@ public class Main {
         System.out.println("-----------------------------------");
 
         LoginService loginService = new LoginService();
-        User loggedIn1 = loginService.login("123456789D","password1234");
-        User loggedIn2 = loginService.login("123456789D","password123");
+        User loggedIn1 = loginService.login("h3214","comingsoon1234");
+        User loggedIn2 = loginService.login("h3214","comingsoon123");
         if(loggedIn1 != null){
             if(loggedIn2 instanceof Customer){
                 System.out.println("Welcome Customer");

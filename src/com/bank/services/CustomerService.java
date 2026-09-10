@@ -10,14 +10,18 @@ import java.util.List;
 public class CustomerService {
 
     private FileService fileService;
+    private PasswordService passwordService;
 
-    public CustomerService(){
+    public CustomerService() {
         fileService = new FileService();
+        passwordService = new PasswordService();
     }
 
+
     public Customer createCustomer(String id, String name, String password){
-        Customer customer = new Customer(id,name,password);
-        fileService.saveCustomer(id,name,password);
+        String hashedPassword = passwordService.hashPassword(password);
+        Customer customer = new Customer(id,name,hashedPassword);
+        fileService.saveCustomer(id,name,hashedPassword);
         return customer;
     }
 
