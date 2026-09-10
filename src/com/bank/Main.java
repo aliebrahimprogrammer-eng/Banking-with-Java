@@ -4,6 +4,7 @@ import com.bank.models.*;
 import com.bank.services.BankService;
 import com.bank.services.CustomerService;
 import com.bank.services.FileService;
+import com.bank.services.LoginService;
 
 import java.util.List;
 
@@ -91,5 +92,42 @@ public class Main {
         for (Account acc : accs){
             System.out.println(acc.getAccountNumber()+ " - " + acc.getBalance());
         }
+        System.out.println("-----------------------------------");
+        customerService.attachAccounts(customerList,accs);
+        for(Customer customerX : customerList){
+            System.out.println("Customer " + customerX.getName());
+            if(customerX.getCheckingAccount() != null){
+                System.out.println(customerX.getCheckingAccount().getBalance());
+            }
+            if(customerX.getSavingsAccount() != null){
+                System.out.println(customerX.getSavingsAccount().getBalance());
+            }
+        }
+        System.out.println("-----------------------------------");
+
+        LoginService loginService = new LoginService();
+        User loggedIn1 = loginService.login("123456789D","password1234");
+        User loggedIn2 = loginService.login("123456789D","password123");
+        if(loggedIn1 != null){
+            if(loggedIn2 instanceof Customer){
+                System.out.println("Welcome Customer");
+            }
+            if(loggedIn2 instanceof Banker){
+                System.out.println("Welcome Banker");
+            }
+        }else{
+            System.out.println("Invalid Login");
+        }
+        if(loggedIn2 != null){
+            if(loggedIn2 instanceof Customer){
+                System.out.println("Welcome Customer");
+            }
+            if(loggedIn2 instanceof Banker){
+                System.out.println("Welcome Banker");
+            }
+        }else{
+            System.out.println("Invalid Login");
+        }
+
     }
 }
