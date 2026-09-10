@@ -1,6 +1,9 @@
 package com.bank.services;
 
+import com.bank.models.Account;
+import com.bank.models.CheckingAccount;
 import com.bank.models.Customer;
+import com.bank.models.SavingsAccount;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -67,5 +70,32 @@ public class FileService {
             System.out.println("Error Loading Customers");
         }
         return customers;
+    }
+
+    public List<Account> loadAccounts(){
+        List<Account> accountsList = new ArrayList<>();
+        try{
+            java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.FileReader(accountsFile));
+            String line;
+            while ((line = reader.readLine()) != null){
+                String[] parts = line.split(",");
+                String customerId = parts[0];
+                String accountNumber = parts[1];
+                String accountType = parts[2];
+                double balance = Double.parseDouble(parts[3]);
+
+                Account account;
+                if(accountType.equals("Checking")){
+                     account = new CheckingAccount(customerId,accountNumber,balance);
+                }else{
+                     account = new SavingsAccount(customerId,accountNumber,balance);
+                }
+                accountsList.add(account);
+            }
+            reader.close();
+        }catch(IOException e){
+            System.out.println("Error loading accounts");
+        }
+        return accountsList;
     }
 }

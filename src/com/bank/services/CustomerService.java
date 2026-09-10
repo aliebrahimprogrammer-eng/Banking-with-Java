@@ -19,13 +19,13 @@ public class CustomerService {
     }
 
     public void addCheckingAccount(Customer customer,String accountNumber, double balance){
-        CheckingAccount account = new CheckingAccount(accountNumber,balance);
+        CheckingAccount account = new CheckingAccount(customer.getCustomerId(),accountNumber,balance);
         customer.setCheckingAccount(account);
         fileService.saveAccount(customer.getCustomerId(),accountNumber,"Checking",balance);
     }
 
     public void addSavingAccount(Customer customer,String accountNumber, double balance){
-        SavingsAccount account = new SavingsAccount(accountNumber,balance);
+        SavingsAccount account = new SavingsAccount(customer.getCustomerId(),accountNumber,balance);
         customer.setSavingsAccount(account);
         fileService.saveAccount(customer.getCustomerId(),accountNumber,"Savings",balance);
     }

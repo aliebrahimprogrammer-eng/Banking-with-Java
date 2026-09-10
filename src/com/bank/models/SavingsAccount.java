@@ -4,8 +4,8 @@ import com.bank.exceptions.AccountInactiveException;
 import com.bank.exceptions.InsufficientFundException;
 
 public class SavingsAccount extends Account {
-    public SavingsAccount(String accountNumber, double balance) {
-        super(accountNumber, balance);
+    public SavingsAccount(String customerId, String accountNumber, double balance) {
+        super(customerId, accountNumber, balance);
     }
 
     @Override

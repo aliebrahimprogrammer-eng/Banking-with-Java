@@ -13,13 +13,20 @@ public abstract class Account {
     private List<Transaction> transactionsList;
     private boolean active;
     private int overdraftCount;
+    private String customerId;
 
-    public Account(String accountNumber, double balance) {
+
+    public Account(String customerId, String accountNumber, double balance) {
+        this.customerId =customerId;
         this.accountNumber = accountNumber;
         this.balance = balance;
         this.transactionsList = new ArrayList<>();
         this.active = true;
         this.overdraftCount = 0;
+    }
+
+    public String getCustomerId() {
+        return customerId;
     }
 
     public String getAccountNumber() {

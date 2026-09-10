@@ -14,8 +14,8 @@ public class Main {
 
         Customer customer = new Customer("123456789D","Ali Ebrahim","password123");
         Banker banker = new Banker("897645321","Ahmed Hani","qwerty123");
-        CheckingAccount cAccount = new CheckingAccount("54321",300);
-        SavingsAccount sAccount = new SavingsAccount("12345",200);
+        CheckingAccount cAccount = new CheckingAccount("123456789D","54321",300);
+        SavingsAccount sAccount = new SavingsAccount("897645321","12345",200);
 
         customer.setCheckingAccount(cAccount);
         customer.setSavingsAccount(sAccount);
@@ -85,6 +85,11 @@ public class Main {
         List<Customer> customerList = fileService.loadCustomers();
         for (Customer cust : customerList){
             System.out.println(cust.getCustomerId() + " - " + cust.getName());
+        }
+        System.out.println("-----------------------------------");
+        List<Account> accs = fileService.loadAccounts();
+        for (Account acc : accs){
+            System.out.println(acc.getAccountNumber()+ " - " + acc.getBalance());
         }
     }
 }

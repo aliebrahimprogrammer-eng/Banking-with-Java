@@ -4,8 +4,8 @@ import com.bank.exceptions.InsufficientFundException;
 
 public class CheckingAccount extends Account{
 
-    public CheckingAccount(String accountNumber, double balance) {
-        super(accountNumber, balance);
+    public CheckingAccount(String customerId, String accountNumber, double balance) {
+        super(customerId,accountNumber, balance);
     }
 
     @Override
