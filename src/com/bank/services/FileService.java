@@ -1,7 +1,11 @@
 package com.bank.services;
 
+import com.bank.models.Customer;
+
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FileService {
     private static final String customersFile = "data/customers.txt";
@@ -42,5 +46,26 @@ public class FileService {
         } catch (IOException e){
             System.out.println("Error saving account.");
         }
+    }
+
+    public List<Customer> loadCustomers(){
+        List<Customer> customers = new ArrayList<>();
+        try{
+            java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.FileReader(customersFile));
+            String line;
+            while((line = reader.readLine()) != null){
+                String[] parts = line.split(",");
+                String id = parts[0];
+                String name = parts[1];
+                String password = parts [2];
+                Customer customer = new Customer(id,name,password);
+                customers.add(customer);
+
+            }
+            reader.close();
+        }catch(IOException e){
+            System.out.println("Error Loading Customers");
+        }
+        return customers;
     }
 }
