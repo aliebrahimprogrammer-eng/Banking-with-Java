@@ -91,7 +91,7 @@ public class BankApplication {
             if(choice==1){
                 viewAccount(customer);
             } else if (choice==2) {
-                System.out.println("2");
+                deposit(customer);
             } else if (choice==3) {
                 System.out.println("3");
             } else if (choice==4) {
@@ -109,6 +109,7 @@ public class BankApplication {
 
         }
     }
+
 
     private void bankerMenu(Banker banker){}
 
@@ -129,6 +130,40 @@ public class BankApplication {
             System.out.println("Balance: " + customer.getSavingsAccount().getBalance());
         }
 
+    }
+
+    private void deposit(Customer customer) {
+        System.out.println("=========================");
+        System.out.println("         Deposit         ");
+        System.out.println("=========================");
+
+        System.out.println("1. Checking Account");
+        System.out.println("2. Savings Account");
+
+        System.out.println("Choose an account: ");
+
+        int depositChoice = scanner.nextInt();
+        String accountNumber;
+        if (depositChoice ==1){
+            if(customer.getCheckingAccount()==null){
+                System.out.println("You do not have a checking account.");
+                return;
+            }
+            accountNumber = customer.getCheckingAccount().getAccountNumber();
+        }else if (depositChoice == 2){
+            if(customer.getSavingsAccount()==null){
+                System.out.println("You do not have a savings account.");
+                return;
+            }
+            accountNumber = customer.getSavingsAccount().getAccountNumber();
+        }else{
+            System.out.println("Invalid account choice.");
+            return;
+        }
+        System.out.println("Enter the amount you wish to deposit:");
+        double amount = scanner.nextDouble();
+        bankService.deposit(accountNumber,amount);
+        System.out.println("Deposited " + amount +"$ to the account " + accountNumber + " was successful.");
     }
 
 }
