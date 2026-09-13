@@ -28,13 +28,13 @@ public class CustomerService {
     public void addCheckingAccount(Customer customer,String accountNumber, double balance){
         CheckingAccount account = new CheckingAccount(customer.getCustomerId(),accountNumber,balance);
         customer.setCheckingAccount(account);
-        fileService.saveAccount(customer.getCustomerId(),accountNumber,"Checking",balance);
+        fileService.saveAccount(account);
     }
 
     public void addSavingAccount(Customer customer,String accountNumber, double balance){
         SavingsAccount account = new SavingsAccount(customer.getCustomerId(),accountNumber,balance);
         customer.setSavingsAccount(account);
-        fileService.saveAccount(customer.getCustomerId(),accountNumber,"Savings",balance);
+        fileService.saveAccount(account);
     }
 
     public void attachAccounts(List<Customer> customers, List<Account> accounts){

@@ -41,11 +41,16 @@ public class FileService {
         }
     }
 
-    public void saveAccount(String customerId,String accountNumber,String accountType, double balance){
+    public void saveAccount(Account account){
         try{
             FileWriter writer = new FileWriter(accountsFile, true);
             writer.write(
-                    customerId + "," + accountNumber + "," + accountType + "," + balance + "\n"
+                    account.getCustomerId() + "," +
+                            account.getAccountNumber() + "," +
+                            getAccountType(account) + "," +
+                            account.getBalance() + "," +
+                            account.isActive() + "," +
+                            account.getOverdraftCount() + "\n"
             );
             writer.close();
         } catch (IOException e){
@@ -85,12 +90,14 @@ public class FileService {
                 String accountNumber = parts[1];
                 String accountType = parts[2];
                 double balance = Double.parseDouble(parts[3]);
+                boolean active = Boolean.parseBoolean(parts[4]);
+                int overdraftCount = Integer.parseInt(parts[5]);
 
                 Account account;
                 if(accountType.equals("Checking")){
-                     account = new CheckingAccount(customerId,accountNumber,balance);
+                     account = new CheckingAccount(customerId,accountNumber,balance,active,overdraftCount);
                 }else{
-                     account = new SavingsAccount(customerId,accountNumber,balance);
+                     account = new SavingsAccount(customerId,accountNumber,balance,active,overdraftCount);
                 }
                 accountsList.add(account);
             }
@@ -110,7 +117,12 @@ public class FileService {
                 String[] parts = line.split(",");
                 String accountNumber = parts[1];
                 if (accountNumber.equals(updatedAccount.getAccountNumber())){
-                    line = updatedAccount.getCustomerId()+","+updatedAccount.getAccountNumber()+","+getAccountType(updatedAccount)+","+updatedAccount.getBalance();
+                    line = updatedAccount.getCustomerId()+","+
+                            updatedAccount.getAccountNumber()+","+
+                            getAccountType(updatedAccount)+","+
+                            updatedAccount.getBalance()+","+
+                            updatedAccount.isActive()+","+
+                            updatedAccount.getOverdraftCount();
                 }
                 lines.add(line);
             }

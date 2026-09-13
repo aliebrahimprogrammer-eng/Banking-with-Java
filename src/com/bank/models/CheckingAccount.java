@@ -8,6 +8,10 @@ public class CheckingAccount extends Account{
         super(customerId,accountNumber, balance);
     }
 
+    public CheckingAccount(String customerId, String accountNumber, double balance, boolean active, int overdraftCount) {
+        super(customerId,accountNumber, balance, active , overdraftCount);
+    }
+
     @Override
     public void withdraw (double amount) throws InsufficientFundException, AccountInactiveException {
         if(!isActive()){

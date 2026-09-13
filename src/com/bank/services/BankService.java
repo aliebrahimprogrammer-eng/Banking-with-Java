@@ -47,6 +47,8 @@ public class BankService implements ITransactionOperations {
         if (account != null){
             try{
                 account.withdraw(amount);
+                fileService.updateAccount(account);
+                System.out.println("Withdrew " + amount +"$ from the account " + accountNumber + " was successful.");
             } catch (InsufficientFundException | AccountInactiveException e){
                 System.out.println(e.getMessage());
             }

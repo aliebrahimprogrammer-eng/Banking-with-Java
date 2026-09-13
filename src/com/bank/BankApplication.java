@@ -93,7 +93,7 @@ public class BankApplication {
             } else if (choice==2) {
                 deposit(customer);
             } else if (choice==3) {
-                System.out.println("3");
+               withdraw(customer);
             } else if (choice==4) {
                 System.out.println("4");
             } else if (choice==5) {
@@ -110,7 +110,6 @@ public class BankApplication {
         }
     }
 
-
     private void bankerMenu(Banker banker){}
 
     private void viewAccount(Customer customer){
@@ -120,12 +119,14 @@ public class BankApplication {
         System.out.println("=========================");
 
         if(customer.getCheckingAccount() != null){
-            System.out.println("Checking Account");
+            String activity = customer.getCheckingAccount().isActive() ? "Active" : "Inactive";
+            System.out.println("Checking Account (" + activity +")");
             System.out.println("Account Number: " + customer.getCheckingAccount().getAccountNumber());
             System.out.println("Balance: " + customer.getCheckingAccount().getBalance());
         }
         if(customer.getSavingsAccount() != null){
-            System.out.println("Saving Account");
+            String activity = customer.getSavingsAccount().isActive() ? "Active" : "Inactive";
+            System.out.println("Saving Account (" + activity +")");
             System.out.println("Account Number: " + customer.getSavingsAccount().getAccountNumber());
             System.out.println("Balance: " + customer.getSavingsAccount().getBalance());
         }
@@ -164,6 +165,39 @@ public class BankApplication {
         double amount = scanner.nextDouble();
         bankService.deposit(accountNumber,amount);
         System.out.println("Deposited " + amount +"$ to the account " + accountNumber + " was successful.");
+    }
+
+    private void withdraw(Customer customer) {
+        System.out.println("=========================");
+        System.out.println("         Withdraw         ");
+        System.out.println("=========================");
+
+        System.out.println("1. Checking Account");
+        System.out.println("2. Savings Account");
+
+        System.out.println("Choose an account: ");
+
+        int depositChoice = scanner.nextInt();
+        String accountNumber;
+        if (depositChoice ==1){
+            if(customer.getCheckingAccount()==null){
+                System.out.println("You do not have a checking account.");
+                return;
+            }
+            accountNumber = customer.getCheckingAccount().getAccountNumber();
+        }else if (depositChoice == 2){
+            if(customer.getSavingsAccount()==null){
+                System.out.println("You do not have a savings account.");
+                return;
+            }
+            accountNumber = customer.getSavingsAccount().getAccountNumber();
+        }else{
+            System.out.println("Invalid account choice.");
+            return;
+        }
+        System.out.println("Enter the amount you wish to withdraw:");
+        double amount = scanner.nextDouble();
+        bankService.withdraw(accountNumber,amount);
     }
 
 }

@@ -25,6 +25,15 @@ public abstract class Account {
         this.overdraftCount = 0;
     }
 
+    public Account(String customerId, String accountNumber, double balance, boolean active , int overdraftCount) {
+        this.customerId =customerId;
+        this.accountNumber = accountNumber;
+        this.balance = balance;
+        this.transactionsList = new ArrayList<>();
+        this.active = active;
+        this.overdraftCount = overdraftCount;
+    }
+
     public String getCustomerId() {
         return customerId;
     }
@@ -61,10 +70,21 @@ public abstract class Account {
         overdraftCount++;
     }
 
+    protected void resetOverdraftCount(){
+        overdraftCount = 0;
+    }
+
     public abstract void withdraw(double amount) throws InsufficientFundException,AccountInactiveException;
 
     public void deposit(double amount){
+        if(amount <= 0){
+            throw new IllegalArgumentException("Deposit amount must be greater than 0$.");
+        }
         balance += amount;
+        if(!isActive() && getBalance() > 0){
+            setActive(true);
+            resetOverdraftCount();
+        }
         addTransaction(new Transaction(amount,"Deposit"));
     }
 
