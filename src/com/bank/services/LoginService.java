@@ -13,10 +13,9 @@ public class LoginService {
 
 
 
-    public LoginService() {
+    public LoginService(List<Customer> userList) {
         passwordService = new PasswordService();
-        FileService fileService = new FileService();
-        userList = fileService.loadCustomers();
+        this.userList = userList;
     }
 
 
@@ -33,7 +32,7 @@ public class LoginService {
                         user.setLockedUntil(null);
                     }
                 }
-                if (user.getCustomerId().equals(customerId) && user.getPassword().equals(hashedPassword)) {
+                if (user.getPassword().equals(hashedPassword)) {
                     user.resetFailedLoginAttempt();
                     user.setLockedUntil(null);
                     return user;

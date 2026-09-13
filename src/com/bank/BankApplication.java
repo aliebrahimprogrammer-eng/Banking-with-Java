@@ -1,19 +1,35 @@
 package com.bank;
 
+import com.bank.models.Account;
+import com.bank.models.Banker;
 import com.bank.models.Customer;
 import com.bank.models.User;
+import com.bank.services.BankService;
+import com.bank.services.CustomerService;
+import com.bank.services.FileService;
 import com.bank.services.LoginService;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class BankApplication {
 
     private Scanner scanner;
     private LoginService loginService;
+    private FileService fileService;
+    private BankService bankService;
+
 
     public BankApplication(){
         scanner = new Scanner(System.in);
-        loginService = new LoginService();
+        fileService = new FileService();
+        List<Customer> customers = fileService.loadCustomers();
+        List<Account> accounts = fileService.loadAccounts();
+        CustomerService customerService = new CustomerService();
+        customerService.attachAccounts(customers,accounts);
+        loginService = new LoginService(customers);
+        bankService = new BankService(accounts);
+
     }
 
     public void start(){
@@ -38,11 +54,13 @@ public class BankApplication {
 
     private void login(){
         System.out.println("Customer ID:" );
-        String id = scanner.next();
+        //String id = scanner.next();
         System.out.println("Password: ");
-        String password = scanner.next();
+        //String password = scanner.next();
+        String testId = "g2345";
+        String testPass = "whodiz123";
 
-        User user = loginService.login(id,password);
+        User user = loginService.login(testId,testPass);
 
         if(user != null){
             System.out.println("Welcome " + user.getName());
@@ -71,7 +89,7 @@ public class BankApplication {
             int choice = scanner.nextInt();
 
             if(choice==1){
-                System.out.println("1");
+                viewAccount(customer);
             } else if (choice==2) {
                 System.out.println("2");
             } else if (choice==3) {
@@ -91,4 +109,26 @@ public class BankApplication {
 
         }
     }
+
+    private void bankerMenu(Banker banker){}
+
+    private void viewAccount(Customer customer){
+
+        System.out.println("=========================");
+        System.out.println("       My Accounts       ");
+        System.out.println("=========================");
+
+        if(customer.getCheckingAccount() != null){
+            System.out.println("Checking Account");
+            System.out.println("Account Number: " + customer.getCheckingAccount().getAccountNumber());
+            System.out.println("Balance: " + customer.getCheckingAccount().getBalance());
+        }
+        if(customer.getSavingsAccount() != null){
+            System.out.println("Saving Account");
+            System.out.println("Account Number: " + customer.getSavingsAccount().getAccountNumber());
+            System.out.println("Balance: " + customer.getSavingsAccount().getBalance());
+        }
+
+    }
+
 }

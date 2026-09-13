@@ -7,13 +7,14 @@ import java.util.List;
 
 import com.bank.exceptions.AccountInactiveException;
 import com.bank.exceptions.InsufficientFundException;
+import com.bank.models.Customer;
 
 public class BankService implements ITransactionOperations {
 
     private List<Account> accounts;
 
-    public BankService(){
-        accounts = new ArrayList<>();
+    public BankService(List<Account> accounts){
+        this.accounts = accounts;
     }
 
     public void addAccount(Account account){
