@@ -8,6 +8,7 @@ import java.util.List;
 import com.bank.exceptions.AccountInactiveException;
 import com.bank.exceptions.InsufficientFundException;
 import com.bank.models.Customer;
+import com.bank.models.Transaction;
 
 public class BankService implements ITransactionOperations {
 
@@ -38,6 +39,8 @@ public class BankService implements ITransactionOperations {
         if (account != null){
             account.deposit(amount);
             fileService.updateAccount(account);
+            Transaction newestTransaction = account.getTransactionsList().get(account.getTransactionsList().size() -1 );
+            fileService.saveTransaction(account,newestTransaction);
             System.out.println("Deposited " + amount +"$ to the account " + accountNumber + " was successful" +
                     "and your balance now is " + account.getBalance() + "$.");
         }
@@ -50,6 +53,8 @@ public class BankService implements ITransactionOperations {
             try{
                 account.withdraw(amount);
                 fileService.updateAccount(account);
+                Transaction newestTransaction = account.getTransactionsList().get(account.getTransactionsList().size() -1 );
+                fileService.saveTransaction(account,newestTransaction);
                 System.out.println("Withdrew " + amount +"$ from the account " + accountNumber + " was successful" +
                         " and your current balance now is " + account.getBalance() + "$.");
             } catch (InsufficientFundException | AccountInactiveException e){

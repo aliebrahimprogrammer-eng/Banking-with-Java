@@ -1,9 +1,6 @@
 package com.bank.services;
 
-import com.bank.models.Account;
-import com.bank.models.CheckingAccount;
-import com.bank.models.Customer;
-import com.bank.models.SavingsAccount;
+import com.bank.models.*;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -15,6 +12,7 @@ import java.util.List;
 public class FileService {
     private static final String customersFile = "data/customers.txt";
     private static final String accountsFile = "data/accounts.txt";
+    private static final String transactionsFile = "data/transactions.txt";
 
     public void saveCustomer(String id, String name, String password){
         try{
@@ -143,6 +141,22 @@ public class FileService {
             return "Checking";
         }else {
             return "Savings";
+        }
+    }
+
+    public void saveTransaction (Account account, Transaction transaction){
+        try{
+            FileWriter writer = new FileWriter(transactionsFile, true);
+            writer.write(
+                    account.getAccountNumber() + ","
+                    + transaction.getDate() + ","
+                    + transaction.getType() + ","
+                    + transaction.getAmount() + ","
+                    + transaction.getBalanceAfter() + "\n"
+            );
+            writer.close();
+        } catch (IOException e){
+            System.out.println("Error saving transaction.");
         }
     }
 }

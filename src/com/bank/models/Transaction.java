@@ -7,11 +7,13 @@ public class Transaction {
     private double amount;
     private String type;
     private LocalDateTime date;
+    private double balanceAfter;
 
-    public Transaction(double amount, String type) {
+    public Transaction(double amount, String type, double balanceAfter) {
         this.amount = amount;
         this.type = type;
         this.date = LocalDateTime.now();
+        this.balanceAfter = balanceAfter;
     }
 
     public double getAmount() {
@@ -26,4 +28,7 @@ public class Transaction {
         return date;
     }
 
+    public double getBalanceAfter() {
+        return balanceAfter;
+    }
 }

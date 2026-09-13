@@ -25,7 +25,7 @@ public class SavingsAccount extends Account {
         }
         else {
             setBalance(getBalance() - amount);
-            addTransaction(new Transaction(amount, "Withdraw"));
+            addTransaction(new Transaction(amount, "Withdraw",getBalance()));
         }
     }
 }

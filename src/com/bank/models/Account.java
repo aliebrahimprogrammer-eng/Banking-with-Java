@@ -85,7 +85,7 @@ public abstract class Account {
             setActive(true);
             resetOverdraftCount();
         }
-        addTransaction(new Transaction(amount,"Deposit"));
+        addTransaction(new Transaction(amount,"Deposit", getBalance()));
     }
 
     public void addTransaction(Transaction transaction){
@@ -99,8 +99,8 @@ public abstract class Account {
         if (!isNegative) {
             setBalance( getBalance() - amount - overdraftFee);
             increaseOverdraftCount();
-            addTransaction(new Transaction(amount,"Overdraft"));
-            addTransaction(new Transaction(overdraftFee,"Overdraft Fee"));
+            addTransaction(new Transaction(amount,"Overdraft",getBalance()));
+            addTransaction(new Transaction(overdraftFee,"Overdraft Fee",getBalance()));
 
             if(getOverdraftCount() >= 2){
                 setActive(false);
@@ -111,8 +111,8 @@ public abstract class Account {
             }else{
                 setBalance( getBalance() - amount - overdraftFee);
                 increaseOverdraftCount();
-                addTransaction(new Transaction(amount,"Overdraft"));
-                addTransaction(new Transaction(overdraftFee,"Overdraft Fee"));
+                addTransaction(new Transaction(amount,"Overdraft",getBalance()));
+                addTransaction(new Transaction(overdraftFee,"Overdraft Fee",getBalance()));
 
                 if(getOverdraftCount() >= 2){
                     setActive(false);
