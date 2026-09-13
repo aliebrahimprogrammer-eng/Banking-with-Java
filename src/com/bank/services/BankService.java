@@ -38,6 +38,8 @@ public class BankService implements ITransactionOperations {
         if (account != null){
             account.deposit(amount);
             fileService.updateAccount(account);
+            System.out.println("Deposited " + amount +"$ to the account " + accountNumber + " was successful" +
+                    "and your balance now is " + account.getBalance() + "$.");
         }
     }
 
@@ -48,7 +50,8 @@ public class BankService implements ITransactionOperations {
             try{
                 account.withdraw(amount);
                 fileService.updateAccount(account);
-                System.out.println("Withdrew " + amount +"$ from the account " + accountNumber + " was successful.");
+                System.out.println("Withdrew " + amount +"$ from the account " + accountNumber + " was successful" +
+                        " and your current balance now is " + account.getBalance() + "$.");
             } catch (InsufficientFundException | AccountInactiveException e){
                 System.out.println(e.getMessage());
             }
@@ -60,10 +63,16 @@ public class BankService implements ITransactionOperations {
     public void transfer(String fromAccountNumber, String toAccountNumber, double amount) {
         Account fromAccount = findAccount(fromAccountNumber);
         Account toAccount = findAccount(toAccountNumber);
+
         if (fromAccount != null && toAccount != null){
             try {
                 fromAccount.withdraw(amount);
                 toAccount.deposit(amount);
+                fileService.updateAccount(fromAccount);
+                fileService.updateAccount(toAccount);
+                System.out.println(amount + "$ is successfully transferred from your account " +
+                        fromAccount.getAccountNumber() + " to " +toAccount.getAccountNumber() +
+                        " and your balance is now " + fromAccount.getBalance() + "$.");
             } catch(InsufficientFundException | AccountInactiveException e) {
                 System.out.println(e.getMessage());
             }
