@@ -12,9 +12,11 @@ import com.bank.models.Customer;
 public class BankService implements ITransactionOperations {
 
     private List<Account> accounts;
+    private FileService fileService;
 
     public BankService(List<Account> accounts){
         this.accounts = accounts;
+        this.fileService = new FileService();
     }
 
     public void addAccount(Account account){
@@ -35,6 +37,7 @@ public class BankService implements ITransactionOperations {
         Account account = findAccount(accountNumber);
         if (account != null){
             account.deposit(amount);
+            fileService.updateAccount(account);
         }
     }
 

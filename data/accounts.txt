@@ -1,4 +1,4 @@
 h3214,abcd1234,Checking,30.0
 h3214,abcd1234,Savings,60.0
-g2345,1234,Checking,20.0
-g2345,4321,Savings,200.0
+g2345,1234,Checking,420.0
+g2345,4321,Savings,500.0

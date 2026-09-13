@@ -5,6 +5,8 @@ import com.bank.models.CheckingAccount;
 import com.bank.models.Customer;
 import com.bank.models.SavingsAccount;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -97,5 +99,38 @@ public class FileService {
             System.out.println("Error loading accounts");
         }
         return accountsList;
+    }
+
+    public void updateAccount (Account updatedAccount){
+        List<String> lines = new ArrayList<>();
+        try{
+            BufferedReader reader = (new BufferedReader(new FileReader(accountsFile)));
+            String line;
+            while ((line = reader.readLine()) != null){
+                String[] parts = line.split(",");
+                String accountNumber = parts[1];
+                if (accountNumber.equals(updatedAccount.getAccountNumber())){
+                    line = updatedAccount.getCustomerId()+","+updatedAccount.getAccountNumber()+","+getAccountType(updatedAccount)+","+updatedAccount.getBalance();
+                }
+                lines.add(line);
+            }
+                reader.close();
+                FileWriter writer = new FileWriter(accountsFile);
+                for(String updatedLine : lines){
+                    writer.write(updatedLine+"\n");
+                }
+                writer.close();
+        }catch (IOException e){
+            System.out.println("Error updating account.");
+            System.out.println(e);
+        }
+    }
+
+    private String getAccountType(Account updatedAccount) {
+        if(updatedAccount instanceof CheckingAccount){
+            return "Checking";
+        }else {
+            return "Savings";
+        }
     }
 }
