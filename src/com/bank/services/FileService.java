@@ -187,4 +187,34 @@ public class FileService {
             System.out.println(e);
         }
     }
+
+    public void updateCustomerPassword(Customer customer){
+        List<String> lines = new ArrayList<>();
+        try{
+            BufferedReader reader = (new BufferedReader(new FileReader(customersFile)));
+            String line;
+            while ((line = reader.readLine()) != null){
+                String[] parts = line.split(",");
+                String customerId = parts[0];
+                if (customer.getCustomerId().equals(customerId)){
+                    line = customer.getCustomerId() +","+
+                            customer.getName() +","+
+                            customer.getPassword();
+                }
+                lines.add(line);
+            }
+            reader.close();
+            FileWriter writer = new FileWriter(customersFile);
+            for(String updatedLine : lines){
+                writer.write(updatedLine+"\n");
+            }
+            writer.close();
+        }catch (IOException e){
+            System.out.println("Error updating password.");
+            System.out.println(e);
+        }
+    }
+
+
+
 }

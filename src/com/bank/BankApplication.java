@@ -1,10 +1,7 @@
 package com.bank;
 
 import com.bank.models.*;
-import com.bank.services.BankService;
-import com.bank.services.CustomerService;
-import com.bank.services.FileService;
-import com.bank.services.LoginService;
+import com.bank.services.*;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -58,13 +55,13 @@ public class BankApplication {
 
     private void login(){
         System.out.println("Customer ID:" );
-        //String id = scanner.next();
+        String id = scanner.next();
         System.out.println("Password: ");
-        //String password = scanner.next();
-        String testId = "g2345";
-        String testPass = "whodiz123";
+        String password = scanner.next();
+        //String testId = "g2345";
+        //String testPass = "whodiz123";
 
-        User user = loginService.login(testId,testPass);
+        User user = loginService.login(id,password);
 
         if(user != null){
             System.out.println("Welcome " + user.getName());
@@ -106,7 +103,7 @@ public class BankApplication {
             } else if (choice==6) {
                 statement(customer);
             } else if (choice==7) {
-                System.out.println("7");
+                changePassword(customer);
             } else if (choice==8) {
                 System.out.println("Logged out.");
                 loggedIn = false;
@@ -509,6 +506,16 @@ public class BankApplication {
         System.out.println("Current Balance: " + account.getBalance() + "$");
         System.out.println("=========================");
 
+    }
+
+    private void changePassword(Customer customer){
+        scanner.nextLine();
+        System.out.println("Please enter your new password: ");
+        String newPassword = scanner.next();
+        PasswordService passwordService = new PasswordService();
+        customer.setPassword(passwordService.hashPassword(newPassword));
+        fileService.updateCustomerPassword(customer);
+        System.out.println("Your password was changed successfully.");
     }
 
 
