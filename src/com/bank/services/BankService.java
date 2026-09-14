@@ -8,6 +8,7 @@ import java.util.List;
 import com.bank.exceptions.AccountInactiveException;
 import com.bank.exceptions.InsufficientFundException;
 import com.bank.models.Customer;
+import com.bank.models.DebitCard;
 import com.bank.models.Transaction;
 
 public class BankService implements ITransactionOperations {
@@ -37,7 +38,18 @@ public class BankService implements ITransactionOperations {
     public void deposit(String accountNumber, double amount) {
         Account account = findAccount(accountNumber);
         if (account != null){
+            DebitCard card = account.getDebitCard();
+            if (card == null){
+                System.out.println("This account does not have a debit card.");
+                return;
+            }
+            if (!card.canDepositToOwnAccount(amount)){
+                System.out.println("Daily deposit limit exceeded.");
+                return;
+            }
             account.deposit(amount);
+            card.addOwnAccountDepositDailyUsage(amount);
+
             fileService.updateAccount(account);
             Transaction newestTransaction = account.getTransactionsList().get(account.getTransactionsList().size() -1 );
             System.out.println(newestTransaction.getDate());
@@ -53,8 +65,18 @@ public class BankService implements ITransactionOperations {
         Account account = findAccount(accountNumber);
         if (account != null){
             try{
+                DebitCard card = account.getDebitCard();
+                if (card == null){
+                    System.out.println("This account does not have a debit card.");
+                    return;
+                }
+                if (!card.canWithdraw(amount)){
+                    System.out.println("Daily withdrawal limit exceeded.");
+                    return;
+                }
                 int transactionCountBeforeOperation = account.getTransactionsList().size();
                 account.withdraw(amount);
+                card.addWithdrawDailyUsage(amount);
                 for (int i = transactionCountBeforeOperation; i < account.getTransactionsList().size(); i++){
                     Transaction transaction = account.getTransactionsList().get(i);
                     fileService.saveTransaction(account,transaction);
@@ -75,12 +97,36 @@ public class BankService implements ITransactionOperations {
         Account toAccount = findAccount(toAccountNumber);
 
         if (fromAccount != null && toAccount != null){
+            DebitCard card = fromAccount.getDebitCard();
+            if (card == null){
+                System.out.println("This account does not have a debit card.");
+                return;
+            }
+            boolean ownAccountTransfer = fromAccount.getCustomerId().equals(toAccount.getCustomerId());
+            if(ownAccountTransfer){
+                if (!card.canTransferToOwnAccount(amount)){
+                    System.out.println("Daily own-account transfer limit exceeded.");
+                    return;
+                }else{
+                    if (!card.canTransfer(amount)){
+                        System.out.println("Daily transfer limit exceeded.");
+                        return;
+                    }
+                }
+            }
+
             try {
                 int transactionCountBeforeOperationFrom = fromAccount.getTransactionsList().size();
                 int transactionCountBeforeOperationTo = toAccount.getTransactionsList().size();
 
                 fromAccount.withdraw(amount);
                 toAccount.deposit(amount);
+
+                if(ownAccountTransfer){
+                    card.addOwnAccountTransferDailyUsage(amount);
+                }else{
+                    card.addTransferDailyUsage(amount);
+                }
 
                 for (int i = transactionCountBeforeOperationFrom; i < fromAccount.getTransactionsList().size(); i++){
                     Transaction transaction = fromAccount.getTransactionsList().get(i);
