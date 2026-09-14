@@ -1,4 +1,4 @@
 h3214,abcd1234,Checking,30.0,true,0
-h3214,abcd12345,Savings,200.0,true,0
+h3214,abcd12345,Savings,1399.0,true,0
 g2345,1234,Checking,290.0,true,0
-g2345,4321,Savings,460.0,true,1
+g2345,4321,Savings,-444.0,false,2

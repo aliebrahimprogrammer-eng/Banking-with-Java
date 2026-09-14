@@ -111,7 +111,7 @@ public abstract class Account {
             }else{
                 setBalance( getBalance() - amount - overdraftFee);
                 increaseOverdraftCount();
-                addTransaction(new Transaction(amount,"Overdraft",getBalance()));
+                addTransaction(new Transaction(amount,"Overdraft",(getBalance() + overdraftFee)));
                 addTransaction(new Transaction(overdraftFee,"Overdraft Fee",getBalance()));
 
                 if(getOverdraftCount() >= 2){

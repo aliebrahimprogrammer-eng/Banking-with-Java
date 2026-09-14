@@ -76,10 +76,24 @@ public class BankService implements ITransactionOperations {
 
         if (fromAccount != null && toAccount != null){
             try {
+                int transactionCountBeforeOperationFrom = fromAccount.getTransactionsList().size();
+                int transactionCountBeforeOperationTo = toAccount.getTransactionsList().size();
+
                 fromAccount.withdraw(amount);
                 toAccount.deposit(amount);
+
+                for (int i = transactionCountBeforeOperationFrom; i < fromAccount.getTransactionsList().size(); i++){
+                    Transaction transaction = fromAccount.getTransactionsList().get(i);
+                    fileService.saveTransaction(fromAccount,transaction);
+                }
+                for (int i = transactionCountBeforeOperationTo; i < toAccount.getTransactionsList().size(); i++){
+                    Transaction transaction = toAccount.getTransactionsList().get(i);
+                    fileService.saveTransaction(toAccount,transaction);
+                }
+
                 fileService.updateAccount(fromAccount);
                 fileService.updateAccount(toAccount);
+
                 System.out.println(amount + "$ is successfully transferred from your account " +
                         fromAccount.getAccountNumber() + " to " +toAccount.getAccountNumber() +
                         " and your balance is now " + fromAccount.getBalance() + "$.");
