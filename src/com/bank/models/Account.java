@@ -14,6 +14,7 @@ public abstract class Account {
     private boolean active;
     private int overdraftCount;
     private String customerId;
+    private DebitCard debitCard;
 
 
     public Account(String customerId, String accountNumber, double balance) {
@@ -64,6 +65,14 @@ public abstract class Account {
 
     protected void setActive(boolean active){
         this.active = active;
+    }
+
+    public DebitCard getDebitCard() {
+        return debitCard;
+    }
+
+    public void setDebitCard(DebitCard debitCard) {
+        this.debitCard = debitCard;
     }
 
     protected void increaseOverdraftCount(){
