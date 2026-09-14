@@ -104,7 +104,7 @@ public class BankApplication {
             } else if (choice==5) {
                 transactionHistory(customer);
             } else if (choice==6) {
-                System.out.println("6");
+                statement(customer);
             } else if (choice==7) {
                 System.out.println("7");
             } else if (choice==8) {
@@ -462,7 +462,54 @@ public class BankApplication {
         }
     }
 
+    private void statement(Customer customer) {
+        System.out.println("=========================");
+        System.out.println("    Account Statement    ");
+        System.out.println("=========================");
 
+        System.out.println("1. Checking Account");
+        System.out.println("2. Savings Account");
+        System.out.println("3. Back");
+        System.out.println("Choose an account: ");
+
+        int choice = scanner.nextInt();
+        if (choice ==1){
+            if (customer.getCheckingAccount() == null){
+                System.out.println("You do not have a checking accounts.");
+                return;
+            }
+            showStatement(customer.getCheckingAccount());
+        }else if (choice ==2){
+            if (customer.getSavingsAccount() == null){
+                System.out.println("You do not have a savings accounts.");
+                return;
+            }
+            showStatement(customer.getSavingsAccount());
+        }else if (choice ==3){
+            return;
+        }else{
+            System.out.println("Invalid option.");
+        }
+    }
+
+    public void showStatement(Account account){
+        System.out.println();
+        System.out.println("=========================");
+        System.out.println("    Account Statement    ");
+        System.out.println("=========================");
+
+        System.out.println("Account Number: " + account.getAccountNumber());
+        System.out.println("Current Balance: " + account.getBalance() + "$");
+        System.out.println("Account Status: " + (account.isActive() ? "Active" : "Inactive"));
+        System.out.println("=========================");
+        for (Transaction transaction : account.getTransactionsList()){
+            printTransaction(transaction);
+        }
+        System.out.println("=========================");
+        System.out.println("Current Balance: " + account.getBalance() + "$");
+        System.out.println("=========================");
+
+    }
 
 
 
