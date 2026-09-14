@@ -76,6 +76,25 @@ public class DebitCard {
         return ownAccountDepositLimit;
     }
 
+    public double getDailyWithdrawAmount() {
+        return dailyWithdrawAmount;
+    }
+
+    public double getDailyTransferAmount() {
+        return dailyTransferAmount;
+    }
+
+    public double getDailyOwnAccountTransferAmount() {
+        return dailyOwnAccountTransferAmount;
+    }
+
+    public double getDailyDepositAmount() {
+        return dailyDepositAmount;
+    }
+
+    public double getDailyOwnAccountDepositAmount() {
+        return dailyOwnAccountDepositAmount;
+    }
 
     public boolean canWithdraw (double amount){
         return dailyWithdrawAmount + amount <= withdrawLimit;
@@ -95,5 +114,25 @@ public class DebitCard {
 
     public boolean canDepositToOwnAccount (double amount){
         return dailyOwnAccountDepositAmount + amount <= ownAccountDepositLimit;
+    }
+
+    public void addWithdrawDailyUsage(double amount){
+        dailyWithdrawAmount += amount;
+    }
+
+    public void addTransferDailyUsage(double amount){
+        dailyTransferAmount += amount;
+    }
+
+    public void addDepositDailyUsage(double amount){
+        dailyDepositAmount += amount;
+    }
+
+    public void addOwnAccountDepositDailyUsage(double amount){
+        dailyOwnAccountDepositAmount += amount;
+    }
+
+    public void addOwnAccountTransferDailyUsage(double amount){
+        dailyOwnAccountTransferAmount += amount;
     }
 }
