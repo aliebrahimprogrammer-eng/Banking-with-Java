@@ -77,4 +77,23 @@ public class DebitCard {
     }
 
 
+    public boolean canWithdraw (double amount){
+        return dailyWithdrawAmount + amount <= withdrawLimit;
+    }
+
+    public boolean canTransfer (double amount){
+        return dailyTransferAmount + amount <= transferLimit;
+    }
+
+    public boolean canTransferToOwnAccount (double amount){
+        return dailyOwnAccountTransferAmount + amount <= ownAccountTransferLimit;
+    }
+
+    public boolean canDeposit (double amount){
+        return dailyDepositAmount + amount <= depositLimit;
+    }
+
+    public boolean canDepositToOwnAccount (double amount){
+        return dailyOwnAccountDepositAmount + amount <= ownAccountDepositLimit;
+    }
 }
