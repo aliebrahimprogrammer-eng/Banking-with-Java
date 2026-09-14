@@ -3,12 +3,14 @@ package com.bank;
 import com.bank.models.*;
 import com.bank.services.*;
 
+import java.security.spec.PSSParameterSpec;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjuster;
 import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -25,10 +27,14 @@ public class BankApplication {
         fileService = new FileService();
         List<Customer> customers = fileService.loadCustomers();
         List<Account> accounts = fileService.loadAccounts();
+        List<User> users = new ArrayList<>(customers);
+        PasswordService passwordService = new PasswordService();
+        Banker banker = new Banker("b1234", "Mr Banker",passwordService.hashPassword("qwerty"));
+        users.add(banker);
         fileService.loadTransactions(accounts);
         CustomerService customerService = new CustomerService();
         customerService.attachAccounts(customers,accounts);
-        loginService = new LoginService(customers);
+        loginService = new LoginService(users);
         bankService = new BankService(accounts);
 
     }
@@ -67,6 +73,8 @@ public class BankApplication {
             System.out.println("Welcome " + user.getName());
             if (user instanceof Customer){
                 customerMenu((Customer)user);
+            } else if ( user instanceof Banker){
+                bankerMenu((Banker)user);
             }
         }else{
             System.out.println("Login failed");
@@ -114,7 +122,110 @@ public class BankApplication {
         }
     }
 
-    private void bankerMenu(Banker banker){}
+    private void bankerMenu(Banker banker){
+        boolean loggedIn = true;
+        while(loggedIn){
+            System.out.println("=========================");
+            System.out.println("       Banker Menu       ");
+            System.out.println("=========================");
+            System.out.println("1. Add Customer");
+            System.out.println("2. Logout");
+            System.out.println("Choose an option:");
+            int choice = scanner.nextInt();
+
+            if(choice==1){
+                addCustomer();
+            } else if (choice==2) {
+                System.out.println("Logged out.");
+                loggedIn = false;
+            } else {
+                System.out.println("Invalid option.");
+            }
+        }
+
+    }
+
+    private void addCustomer() {
+        scanner.nextLine();
+        System.out.println("Enter the customer ID: ");
+        String customerID = scanner.next();
+        System.out.println("Enter the customer name: ");
+        String customerName = scanner.next();
+        System.out.println("Enter the customer password: ");
+        String customerPassword = scanner.next();
+        CustomerService customerService = new CustomerService();
+        Customer customer = customerService.createCustomer(customerID,customerName,customerPassword);
+        System.out.println("The customer is created successfully.");
+
+        scanner.nextLine();
+        System.out.println("Choose an account type: ");
+        System.out.println("1. Checking Account");
+        System.out.println("2. Savings Account");
+        System.out.println("3. Both");
+        System.out.println("Choose an option:");
+        int choice = scanner.nextInt();
+        if(choice==1){
+            System.out.println("Enter checking account number: ");
+            String accountNumber = scanner.next();
+            System.out.println("Enter the account initial balance: ");
+            double balance = scanner.nextDouble();
+            CheckingAccount checkingAccount = customerService.addCheckingAccount(customer,accountNumber,balance);
+            System.out.println("Checking account is created successfully.");
+            addCard(checkingAccount);
+        } else if (choice==2) {
+            System.out.println("Enter savings account number: ");
+            String accountNumber = scanner.next();
+            System.out.println("Enter the account initial balance: ");
+            double balance = scanner.nextDouble();
+            SavingsAccount savingAccount = customerService.addSavingAccount(customer,accountNumber,balance);
+            System.out.println("Savings account is created successfully.");
+            addCard(savingAccount);
+        } else if (choice==3) {
+            System.out.println("Enter checking account number: ");
+            String checkingAccountNumber = scanner.next();
+            System.out.println("Enter the account initial balance: ");
+            double checkingBalance = scanner.nextDouble();
+
+            System.out.println("Enter savings account number: ");
+            String savingsAccountNumber = scanner.next();
+            System.out.println("Enter the account initial balance: ");
+            double savingsBalance = scanner.nextDouble();
+
+            CheckingAccount checkingAccount = customerService.addCheckingAccount(customer,checkingAccountNumber,checkingBalance);
+            SavingsAccount savingsAccount = customerService.addSavingAccount(customer,savingsAccountNumber,savingsBalance);
+
+            System.out.println("Checking and Savings accounts are created successfully.");
+            addCard(checkingAccount);
+            addCard(savingsAccount);
+        }
+        else {
+            System.out.println("Invalid option.");
+        }
+
+    }
+
+    private void addCard(Account account){
+        CustomerService customerService = new CustomerService();
+        scanner.nextLine();
+        System.out.println("Choose a card type: ");
+        System.out.println("1. Mastercard");
+        System.out.println("2. Mastercard Titanium");
+        System.out.println("3. Mastercard Platinum");
+        System.out.println("Choose an option:");
+        int choice2 = scanner.nextInt();
+        String cardType;
+        if(choice2==1){
+            cardType = "Mastercard";
+        }else if(choice2 ==2) {
+            cardType = "Mastercard Titanium";
+        }else {
+            cardType = "Mastercard Platinum";
+        }
+        System.out.println("Enter card number: ");
+        String cardNumber = scanner.next();
+
+        customerService.addDebitCard(account,cardNumber,cardType);
+    }
 
     private void viewAccount(Customer customer){
 

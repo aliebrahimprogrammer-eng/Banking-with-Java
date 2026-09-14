@@ -9,11 +9,11 @@ import java.util.List;
 public class LoginService {
 
     private PasswordService passwordService;
-    private List<Customer> userList;
+    private List<User> userList;
 
 
 
-    public LoginService(List<Customer> userList) {
+    public LoginService(List<User> userList) {
         passwordService = new PasswordService();
         this.userList = userList;
     }

@@ -1,9 +1,6 @@
 package com.bank.services;
 
-import com.bank.models.Account;
-import com.bank.models.CheckingAccount;
-import com.bank.models.Customer;
-import com.bank.models.SavingsAccount;
+import com.bank.models.*;
 
 import java.util.List;
 
@@ -25,16 +22,23 @@ public class CustomerService {
         return customer;
     }
 
-    public void addCheckingAccount(Customer customer,String accountNumber, double balance){
+    public CheckingAccount addCheckingAccount(Customer customer,String accountNumber, double balance){
         CheckingAccount account = new CheckingAccount(customer.getCustomerId(),accountNumber,balance);
         customer.setCheckingAccount(account);
         fileService.saveAccount(account);
+        return account;
     }
 
-    public void addSavingAccount(Customer customer,String accountNumber, double balance){
+    public SavingsAccount addSavingAccount(Customer customer,String accountNumber, double balance){
         SavingsAccount account = new SavingsAccount(customer.getCustomerId(),accountNumber,balance);
         customer.setSavingsAccount(account);
         fileService.saveAccount(account);
+        return account;
+    }
+
+    public void addDebitCard(Account account, String cardNumber, String cardType){
+        DebitCard card = new DebitCard(cardNumber,cardType);
+        account.setDebitCard(card);
     }
 
     public void attachAccounts(List<Customer> customers, List<Account> accounts){
