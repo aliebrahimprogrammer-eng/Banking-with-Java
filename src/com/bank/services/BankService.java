@@ -40,6 +40,8 @@ public class BankService implements ITransactionOperations {
             account.deposit(amount);
             fileService.updateAccount(account);
             Transaction newestTransaction = account.getTransactionsList().get(account.getTransactionsList().size() -1 );
+            System.out.println(newestTransaction.getDate());
+            System.out.println(newestTransaction.getType());
             fileService.saveTransaction(account,newestTransaction);
             System.out.println("Deposited " + amount +"$ to the account " + accountNumber + " was successful" +
                     "and your balance now is " + account.getBalance() + "$.");
@@ -51,10 +53,13 @@ public class BankService implements ITransactionOperations {
         Account account = findAccount(accountNumber);
         if (account != null){
             try{
+                int transactionCountBeforeOperation = account.getTransactionsList().size();
                 account.withdraw(amount);
+                for (int i = transactionCountBeforeOperation; i < account.getTransactionsList().size(); i++){
+                    Transaction transaction = account.getTransactionsList().get(i);
+                    fileService.saveTransaction(account,transaction);
+                }
                 fileService.updateAccount(account);
-                Transaction newestTransaction = account.getTransactionsList().get(account.getTransactionsList().size() -1 );
-                fileService.saveTransaction(account,newestTransaction);
                 System.out.println("Withdrew " + amount +"$ from the account " + accountNumber + " was successful" +
                         " and your current balance now is " + account.getBalance() + "$.");
             } catch (InsufficientFundException | AccountInactiveException e){
