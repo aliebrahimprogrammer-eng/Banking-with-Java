@@ -11,6 +11,12 @@ public class DebitCard {
     private double depositLimit;
     private double ownAccountDepositLimit;
 
+    private double dailyWithdrawAmount;
+    private double dailyTransferAmount;
+    private double dailyOwnAccountTransferAmount;
+    private double dailyDepositAmount;
+    private double dailyOwnAccountDepositAmount;
+
     public DebitCard(String cardNumber, String cardType) {
         this.cardNumber = cardNumber;
         this.cardType = cardType;
@@ -34,6 +40,12 @@ public class DebitCard {
             depositLimit = 100000;
             ownAccountDepositLimit = 200000;
         }
+
+        this.dailyWithdrawAmount = 0;
+        this.dailyTransferAmount = 0;
+        this.dailyOwnAccountTransferAmount = 0;
+        this.dailyDepositAmount = 0;
+        this.dailyOwnAccountDepositAmount = 0;
     }
 
     public String getCardNumber() {
