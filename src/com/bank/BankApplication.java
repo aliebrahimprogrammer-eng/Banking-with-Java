@@ -1,14 +1,17 @@
 package com.bank;
 
-import com.bank.models.Account;
-import com.bank.models.Banker;
-import com.bank.models.Customer;
-import com.bank.models.User;
+import com.bank.models.*;
 import com.bank.services.BankService;
 import com.bank.services.CustomerService;
 import com.bank.services.FileService;
 import com.bank.services.LoginService;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjuster;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import java.util.Scanner;
 
@@ -25,6 +28,7 @@ public class BankApplication {
         fileService = new FileService();
         List<Customer> customers = fileService.loadCustomers();
         List<Account> accounts = fileService.loadAccounts();
+        fileService.loadTransactions(accounts);
         CustomerService customerService = new CustomerService();
         customerService.attachAccounts(customers,accounts);
         loginService = new LoginService(customers);
@@ -98,7 +102,7 @@ public class BankApplication {
             } else if (choice==4) {
                 transfer(customer);
             } else if (choice==5) {
-                System.out.println("5");
+                transactionHistory(customer);
             } else if (choice==6) {
                 System.out.println("6");
             } else if (choice==7) {
@@ -227,7 +231,7 @@ public class BankApplication {
             }
             accountNumber = customer.getSavingsAccount().getAccountNumber();
         }else{
-            System.out.println("Invalid account choice.");
+            System.out.println("Invalid option.");
             return;
         }
         System.out.println("Enter the account number you wish to transfer to:");
@@ -236,5 +240,231 @@ public class BankApplication {
         double amount = scanner.nextDouble();
         bankService.transfer(accountNumber,toAccount,amount);
     }
+
+    private void transactionHistory(Customer customer) {
+        System.out.println("=========================");
+        System.out.println("   Transaction History   ");
+        System.out.println("=========================");
+
+        System.out.println("1. Checking Account");
+        System.out.println("2. Savings Account");
+        System.out.println("3. Back");
+        System.out.println("Choose an account: ");
+
+        int choice = scanner.nextInt();
+        if (choice ==1){
+            if (customer.getCheckingAccount() == null){
+                System.out.println("You do not have a checking accounts.");
+                return;
+            }
+            showTransactionsMenu(customer.getCheckingAccount());
+        }else if (choice ==2){
+            if (customer.getSavingsAccount() == null){
+                System.out.println("You do not have a savings accounts.");
+                return;
+            }
+            showTransactionsMenu(customer.getSavingsAccount());
+        }else if (choice ==3){
+            return;
+        }else{
+            System.out.println("Invalid option.");
+        }
+    }
+
+    public void showTransactions(Account account){
+        System.out.println("=========================");
+        System.out.println("   Transaction History   ");
+        System.out.println("=========================");
+
+        System.out.println("\nAccount: " + account.getAccountNumber());
+
+        for(Transaction transaction : account.getTransactionsList()){
+            printTransaction(transaction);
+        }
+    }
+
+    public void showTodayTransactions(Account account){
+        LocalDate today = LocalDate.now();
+        System.out.println("=========================");
+        System.out.println("   Transaction History   ");
+        System.out.println("=========================");
+
+        System.out.println("\nAccount: " + account.getAccountNumber());
+        System.out.println("Transaction Filter : Today");
+        for(Transaction transaction : account.getTransactionsList()){
+            if(transaction.getDate().toLocalDate().equals(today)){
+                printTransaction(transaction);
+            }
+        }
+    }
+
+    public void showYesterdayTransactions(Account account){
+        LocalDate today = LocalDate.now().minusDays(1);
+        System.out.println("=========================");
+        System.out.println("   Transaction History   ");
+        System.out.println("=========================");
+
+        System.out.println("\nAccount: " + account.getAccountNumber());
+        System.out.println("Transaction Filter : Yesterday");
+        for(Transaction transaction : account.getTransactionsList()){
+            if(transaction.getDate().toLocalDate().equals(today)){
+                printTransaction(transaction);
+            }
+        }
+    }
+
+    public void showLast7DaysTransactions(Account account){
+        LocalDate today = LocalDate.now();
+        LocalDate sevenDaysAgo = today.minusDays(7);
+        System.out.println("=========================");
+        System.out.println("   Transaction History   ");
+        System.out.println("=========================");
+
+        System.out.println("\nAccount: " + account.getAccountNumber());
+        System.out.println("Transaction Filter : Last 7 Days");
+        for(Transaction transaction : account.getTransactionsList()){
+            LocalDate transactionDate = transaction.getDate().toLocalDate();
+            if(!transactionDate.isBefore(sevenDaysAgo) && !transactionDate.isAfter(today)){
+                printTransaction(transaction);
+            }
+        }
+    }
+
+    public void showLast30DaysTransactions(Account account){
+        LocalDate today = LocalDate.now();
+        LocalDate thirtyDaysAgo = today.minusDays(30);
+        System.out.println("=========================");
+        System.out.println("   Transaction History   ");
+        System.out.println("=========================");
+
+        System.out.println("\nAccount: " + account.getAccountNumber());
+        System.out.println("Transaction Filter : Last 7 Days");
+        for(Transaction transaction : account.getTransactionsList()){
+            LocalDate transactionDate = transaction.getDate().toLocalDate();
+            if(!transactionDate.isBefore(thirtyDaysAgo) && !transactionDate.isAfter(today)){
+                printTransaction(transaction);
+            }
+        }
+    }
+
+    public void showLastWeekTransactions(Account account){
+        LocalDate today = LocalDate.now();
+        LocalDate startOfLastWeek = today.with(TemporalAdjusters.previous(DayOfWeek.SUNDAY));
+        LocalDate endOfLastWeek = startOfLastWeek.plusDays(6);
+
+        System.out.println("=========================");
+        System.out.println("   Transaction History   ");
+        System.out.println("=========================");
+
+        System.out.println("\nAccount: " + account.getAccountNumber());
+        System.out.println("Transaction Filter : Last Week");
+        for(Transaction transaction : account.getTransactionsList()){
+            LocalDate transactionDate = transaction.getDate().toLocalDate();
+            if(!transactionDate.isBefore(startOfLastWeek) && !transactionDate.isAfter(endOfLastWeek)){
+                printTransaction(transaction);
+            }
+        }
+    }
+
+    public void showLastMonthTransactions(Account account){
+        LocalDate today = LocalDate.now();
+        LocalDate startOfLastMonth = today.withDayOfMonth(1).minusMonths(1);
+        LocalDate endOfLastMonth = today.withDayOfMonth(1).minusDays(1);
+
+        System.out.println("=========================");
+        System.out.println("   Transaction History   ");
+        System.out.println("=========================");
+
+        System.out.println("\nAccount: " + account.getAccountNumber());
+        System.out.println("Transaction Filter : Last 7 Days");
+        for(Transaction transaction : account.getTransactionsList()){
+            LocalDate transactionDate = transaction.getDate().toLocalDate();
+            if(!transactionDate.isBefore(startOfLastMonth) && !transactionDate.isAfter(endOfLastMonth)){
+                printTransaction(transaction);
+            }
+        }
+    }
+
+    public void showCustomRangeTransactions(Account account){
+        System.out.println("=========================");
+        System.out.println("   Transaction History   ");
+        System.out.println("=========================");
+
+        scanner.nextLine();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        System.out.println("Enter start date and time in this pattern (yyyy-MM-dd HH:mm): ");
+        String start = scanner.nextLine();
+        System.out.println("Enter end date and time in this pattern (yyyy-MM-dd HH:mm): ");
+        String end = scanner.nextLine();
+        LocalDateTime startDateTime = LocalDateTime.parse(start,formatter);
+        LocalDateTime endDateTime = LocalDateTime.parse(end,formatter);
+
+        System.out.println("\nAccount: " + account.getAccountNumber());
+        System.out.println("Transaction Filter : Custom from " + startDateTime + " to " + endDateTime);
+        for(Transaction transaction : account.getTransactionsList()){
+            LocalDateTime transactionDate = transaction.getDate();
+            if(!transactionDate.isBefore(startDateTime) && !transactionDate.isAfter(endDateTime)){
+                printTransaction(transaction);
+            }
+        }
+    }
+
+    public void printTransaction(Transaction transaction){
+        System.out.println(transaction.getDate() + " | " +
+                transaction.getType() + " | Amount: " +
+                transaction.getAmount() + "$ | Balance: " +
+                transaction.getBalanceAfter() + "$");
+    }
+
+
+    public void showTransactionsMenu(Account account){
+        boolean running = true;
+        while (running) {
+            System.out.println("=========================");
+            System.out.println("   Transaction History   ");
+            System.out.println("=========================");
+
+            System.out.println("\nAccount: " + account.getAccountNumber());
+            System.out.println("1. All Transactions");
+            System.out.println("2. Today");
+            System.out.println("3. Yesterday");
+            System.out.println("4. Last 7 Days");
+            System.out.println("5. Last 30 Days");
+            System.out.println("6. Last week");
+            System.out.println("7. Last month");
+            System.out.println("8. Custom Date/Time");
+            System.out.println("9. Back");
+            System.out.println("Choose an account: ");
+            int choice = scanner.nextInt();
+
+            if(choice==1){
+                showTransactions(account);
+            } else if (choice==2) {
+                showTodayTransactions(account);
+            } else if (choice==3) {
+                showYesterdayTransactions(account);
+            } else if (choice==4) {
+                showLast7DaysTransactions(account);
+            } else if (choice==5) {
+                showLast30DaysTransactions(account);
+            } else if (choice==6) {
+                showLastWeekTransactions(account);
+            } else if (choice==7) {
+                showLastMonthTransactions(account);
+            } else if (choice==8) {
+                showCustomRangeTransactions(account);
+            } else if (choice==9) {
+                running = false;
+            } else {
+                System.out.println("Invalid option.");
+            }
+
+        }
+    }
+
+
+
+
+
 
 }

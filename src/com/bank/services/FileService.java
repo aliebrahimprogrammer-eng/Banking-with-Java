@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -157,6 +158,33 @@ public class FileService {
             writer.close();
         } catch (IOException e){
             System.out.println("Error saving transaction.");
+        }
+    }
+
+    public void loadTransactions(List<Account> accounts){
+        try{
+            BufferedReader reader = new BufferedReader(new FileReader(transactionsFile));
+            String line;
+            while ((line = reader.readLine()) != null){
+                String[] parts = line.split(",");
+
+                String accountNumber = parts[0];
+                String date = parts[1];
+                String type = parts[2];
+                double amount = Double.parseDouble(parts[3]);
+                double balanceAfter = Double.parseDouble(parts[4]);
+
+                for (Account account : accounts){
+                    if (account.getAccountNumber().equals(accountNumber)){
+                        Transaction transaction = new Transaction(amount,type,balanceAfter, LocalDateTime.parse(date));
+                        account.addTransaction(transaction);
+                    }
+                }
+            }
+            reader.close();
+        }catch (IOException e){
+            System.out.println("Error loading transactions");
+            System.out.println(e);
         }
     }
 }

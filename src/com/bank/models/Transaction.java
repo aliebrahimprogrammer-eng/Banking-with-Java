@@ -16,6 +16,13 @@ public class Transaction {
         this.balanceAfter = balanceAfter;
     }
 
+    public Transaction(double amount, String type, double balanceAfter, LocalDateTime date) {
+        this.amount = amount;
+        this.type = type;
+        this.balanceAfter = balanceAfter;
+        this.date = date;
+    }
+
     public double getAmount() {
         return amount;
     }
