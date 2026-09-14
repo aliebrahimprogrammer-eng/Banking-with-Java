@@ -1,5 +1,8 @@
 package com.bank.models;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 public class DebitCard {
 
     String cardNumber;
@@ -17,9 +20,12 @@ public class DebitCard {
     private double dailyDepositAmount;
     private double dailyOwnAccountDepositAmount;
 
+    private LocalDate lastUsageDate;
+
     public DebitCard(String cardNumber, String cardType) {
         this.cardNumber = cardNumber;
         this.cardType = cardType;
+        lastUsageDate = LocalDate.now();
 
         if(cardType.equals("Mastercard Platinum")){
             withdrawLimit = 20000;
@@ -97,22 +103,27 @@ public class DebitCard {
     }
 
     public boolean canWithdraw (double amount){
+        resetDailyUsage();
         return dailyWithdrawAmount + amount <= withdrawLimit;
     }
 
     public boolean canTransfer (double amount){
+        resetDailyUsage();
         return dailyTransferAmount + amount <= transferLimit;
     }
 
     public boolean canTransferToOwnAccount (double amount){
+        resetDailyUsage();
         return dailyOwnAccountTransferAmount + amount <= ownAccountTransferLimit;
     }
 
     public boolean canDeposit (double amount){
+        resetDailyUsage();
         return dailyDepositAmount + amount <= depositLimit;
     }
 
     public boolean canDepositToOwnAccount (double amount){
+        resetDailyUsage();
         return dailyOwnAccountDepositAmount + amount <= ownAccountDepositLimit;
     }
 
@@ -134,5 +145,18 @@ public class DebitCard {
 
     public void addOwnAccountTransferDailyUsage(double amount){
         dailyOwnAccountTransferAmount += amount;
+    }
+
+    private void resetDailyUsage(){
+        LocalDate today = LocalDate.now();
+        if(!lastUsageDate.equals(today)){
+            dailyWithdrawAmount = 0;
+            dailyTransferAmount = 0;
+            dailyOwnAccountTransferAmount = 0;
+            dailyDepositAmount = 0;
+            dailyOwnAccountDepositAmount = 0;
+
+            lastUsageDate = today;
+        }
     }
 }
