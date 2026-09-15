@@ -14,6 +14,7 @@ public class FileService {
     private static final String customersFile = "data/customers.txt";
     private static final String accountsFile = "data/accounts.txt";
     private static final String transactionsFile = "data/transactions.txt";
+    private static final String bankersFile = "data/bankers.txt";
 
     public void saveCustomer(String id, String name, String password){
         try{
@@ -224,6 +225,46 @@ public class FileService {
         }
     }
 
+    public void saveBanker(Banker banker) {
+        try {
+            FileWriter writer = new FileWriter(bankersFile, true);
+            writer.write(
+                    banker.getCustomerId() + ","
+                            + banker.getName() + ","
+                            + banker.getPassword() + "\n"
+            );
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("Error saving banker.");
+
+        }
+    }
+
+        public List<Banker> loadBanker(){
+            List<Banker> bankers = new ArrayList<>();
+            try{
+                java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.FileReader(bankersFile));
+                String line;
+                while((line = reader.readLine()) != null){
+                    String[] parts = line.split(",");
+                    String id = parts[0];
+                    String name = parts[1];
+                    String password = parts [2];
+                    Banker banker = new Banker(id,name,password);
+                    bankers.add(banker);
+
+                }
+                reader.close();
+            }catch(IOException e){
+                System.out.println("Error Loading Bankers");
+            }
+            return bankers;
 
 
-}
+        }
+
+    }
+
+
+
+

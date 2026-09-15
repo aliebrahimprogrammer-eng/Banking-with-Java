@@ -27,10 +27,12 @@ public class BankApplication {
         fileService = new FileService();
         List<Customer> customers = fileService.loadCustomers();
         List<Account> accounts = fileService.loadAccounts();
+        List<Banker> bankers = fileService.loadBanker();
         List<User> users = new ArrayList<>(customers);
-        PasswordService passwordService = new PasswordService();
-        Banker banker = new Banker("b1234", "Mr Banker",passwordService.hashPassword("qwerty"));
-        users.add(banker);
+        users.addAll(bankers);
+        //PasswordService passwordService = new PasswordService();
+        //Banker banker = new Banker("b1234", "Mr Banker",passwordService.hashPassword("qwerty"));
+        //users.add(banker);
         fileService.loadTransactions(accounts);
         CustomerService customerService = new CustomerService();
         customerService.attachAccounts(customers,accounts);
@@ -129,16 +131,19 @@ public class BankApplication {
             System.out.println("       Banker Menu       ");
             System.out.println("=========================");
             System.out.println("1. Add Customer");
-            System.out.println("2. Logout");
+            System.out.println("2. Add Banker");
+            System.out.println("3. Logout");
             System.out.println("Choose an option:");
             int choice = scanner.nextInt();
 
             if(choice==1){
                 addCustomer();
             } else if (choice==2) {
+                addBanker();
+            } else if (choice==3) {
                 System.out.println("Logged out.");
                 loggedIn = false;
-            } else {
+            }else {
                 System.out.println("Invalid option.");
             }
         }
@@ -228,6 +233,28 @@ public class BankApplication {
         String cardNumber = scanner.next();
 
         customerService.addDebitCard(account,cardNumber,cardType);
+    }
+
+    private void addBanker(){
+        scanner.nextLine();
+        System.out.println("Enter banker ID:");
+        String id = scanner.next();
+
+        System.out.println("Enter banker name:");
+        String name = scanner.next();
+
+        System.out.println("Enter banker password:");
+        String password = scanner.next();
+
+        PasswordService passwordService = new PasswordService();
+
+        String hashedPassword = passwordService.hashPassword(password);
+
+        Banker banker = new Banker(id, name, hashedPassword);
+
+        fileService.saveBanker(banker);
+
+        System.out.println("Banker created successfully.");
     }
 
     private void viewAccount(Customer customer){
