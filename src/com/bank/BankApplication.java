@@ -218,8 +218,11 @@ public class BankApplication {
             cardType = "Mastercard";
         }else if(choice2 ==2) {
             cardType = "Mastercard Titanium";
-        }else {
+        }else if(choice2 ==3) {
             cardType = "Mastercard Platinum";
+        }else {
+            System.out.println("Invalid input.");
+            return;
         }
         System.out.println("Enter card number: ");
         String cardNumber = scanner.next();
@@ -609,6 +612,8 @@ public class BankApplication {
         System.out.println("Account Number: " + account.getAccountNumber());
         System.out.println("Current Balance: " + account.getBalance() + "$");
         System.out.println("Account Status: " + (account.isActive() ? "Active" : "Inactive"));
+        System.out.println("Card Type: " + account.getDebitCard().getCardType());
+        System.out.println("Card Number: " + account.getDebitCard().getCardNumber());
         System.out.println("=========================");
         for (Transaction transaction : account.getTransactionsList()){
             printTransaction(transaction);

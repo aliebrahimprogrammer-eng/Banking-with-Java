@@ -25,20 +25,19 @@ public class CustomerService {
     public CheckingAccount addCheckingAccount(Customer customer,String accountNumber, double balance){
         CheckingAccount account = new CheckingAccount(customer.getCustomerId(),accountNumber,balance);
         customer.setCheckingAccount(account);
-        fileService.saveAccount(account);
         return account;
     }
 
     public SavingsAccount addSavingAccount(Customer customer,String accountNumber, double balance){
         SavingsAccount account = new SavingsAccount(customer.getCustomerId(),accountNumber,balance);
         customer.setSavingsAccount(account);
-        fileService.saveAccount(account);
         return account;
     }
 
     public void addDebitCard(Account account, String cardNumber, String cardType){
         DebitCard card = new DebitCard(cardNumber,cardType);
         account.setDebitCard(card);
+        fileService.saveAccount(account);
     }
 
     public void attachAccounts(List<Customer> customers, List<Account> accounts){

@@ -49,7 +49,9 @@ public class FileService {
                             getAccountType(account) + "," +
                             account.getBalance() + "," +
                             account.isActive() + "," +
-                            account.getOverdraftCount() + "\n"
+                            account.getOverdraftCount() +
+                            account.getDebitCard().getCardNumber() +
+                            account.getDebitCard().getCardType() + "\n"
             );
             writer.close();
         } catch (IOException e){
@@ -91,6 +93,8 @@ public class FileService {
                 double balance = Double.parseDouble(parts[3]);
                 boolean active = Boolean.parseBoolean(parts[4]);
                 int overdraftCount = Integer.parseInt(parts[5]);
+                String cardNumber = parts[6];
+                String cardType = parts[7];
 
                 Account account;
                 if(accountType.equals("Checking")){
@@ -98,6 +102,8 @@ public class FileService {
                 }else{
                      account = new SavingsAccount(customerId,accountNumber,balance,active,overdraftCount);
                 }
+                DebitCard card = new DebitCard(cardNumber,cardType);
+                account.setDebitCard(card);
                 accountsList.add(account);
             }
             reader.close();
@@ -121,7 +127,10 @@ public class FileService {
                             getAccountType(updatedAccount)+","+
                             updatedAccount.getBalance()+","+
                             updatedAccount.isActive()+","+
-                            updatedAccount.getOverdraftCount();
+                            updatedAccount.getOverdraftCount()+"," +
+                            updatedAccount.getDebitCard().getCardNumber() + "," +
+                            updatedAccount.getDebitCard().getCardType();
+
                 }
                 lines.add(line);
             }
