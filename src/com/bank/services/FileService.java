@@ -49,8 +49,8 @@ public class FileService {
                             getAccountType(account) + "," +
                             account.getBalance() + "," +
                             account.isActive() + "," +
-                            account.getOverdraftCount() +
-                            account.getDebitCard().getCardNumber() +
+                            account.getOverdraftCount() + "," +
+                            account.getDebitCard().getCardNumber() + "," +
                             account.getDebitCard().getCardType() + "\n"
             );
             writer.close();
