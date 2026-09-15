@@ -446,7 +446,7 @@ public class BankApplication {
         System.out.println("=========================");
 
         System.out.println("\nAccount: " + account.getAccountNumber());
-        System.out.println("Transaction Filter : Last 7 Days");
+        System.out.println("Transaction Filter : Last 30 Days");
         for(Transaction transaction : account.getTransactionsList()){
             LocalDate transactionDate = transaction.getDate().toLocalDate();
             if(!transactionDate.isBefore(thirtyDaysAgo) && !transactionDate.isAfter(today)){
@@ -484,7 +484,7 @@ public class BankApplication {
         System.out.println("=========================");
 
         System.out.println("\nAccount: " + account.getAccountNumber());
-        System.out.println("Transaction Filter : Last 7 Days");
+        System.out.println("Transaction Filter : Last Month");
         for(Transaction transaction : account.getTransactionsList()){
             LocalDate transactionDate = transaction.getDate().toLocalDate();
             if(!transactionDate.isBefore(startOfLastMonth) && !transactionDate.isAfter(endOfLastMonth)){
