@@ -6,3 +6,12 @@ qqq,weqweqwe,Checking,45.0,true,0,111111,Mastercard Platinum
 asf,safe32,Savings,34.0,true,0,111111,Mastercard
 asfa,asdasd,Checking,45.0,true,0,111111,Mastercard Platinum
 asfa,efwewe,Savings,67.0,true,0,111111,Mastercard
+1,qweqwe22,Checking,52354.0,true,0,1234124,Mastercard Platinum
+1,wqdqw342,Savings,3.1512412E7,true,0,14124125125,Mastercard Titanium
+4,wefwet4,Checking,2.3523547E7,true,0,342342,Mastercard Platinum
+4,qwertq3,Savings,3423.0,true,0,32423525,Mastercard Titanium
+qq,qwerqw23,Checking,324.0,true,0,234235,Mastercard Titanium
+customer1,12345,Checking,123.0,true,0,123124512515,Mastercard Titanium
+customer1,54321,Savings,321.0,true,0,1231412515,Mastercard Platinum
+customer2,9876,Checking,99.0,true,0,42375892735,Mastercard
+customer2,6789,Savings,8284.0,true,0,489234234523,Mastercard Platinum

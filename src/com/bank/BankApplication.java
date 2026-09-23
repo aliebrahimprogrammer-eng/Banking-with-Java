@@ -62,7 +62,7 @@ public class BankApplication {
     }
 
     private void login(){
-        System.out.println("Customer ID:" );
+        System.out.println("User ID:" );
         String id = scanner.next();
         System.out.println("Password: ");
         String password = scanner.next();
