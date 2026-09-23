@@ -4,6 +4,7 @@ import com.bank.interfaces.ITransactionOperations;
 import com.bank.models.Account;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.bank.exceptions.AccountInactiveException;
 import com.bank.exceptions.InsufficientFundException;
@@ -36,7 +37,14 @@ public class BankService implements ITransactionOperations {
 
     @Override
     public void deposit(String accountNumber, double amount) {
-        Account account = findAccount(accountNumber);
+        Optional<Account> accountOptional = Optional.ofNullable(findAccount(accountNumber));
+        Account account = accountOptional.orElse(null);
+
+        if (account == null) {
+            System.out.println("Account not found.");
+            return;
+        }
+
         if (account != null){
             DebitCard card = account.getDebitCard();
             if (card == null){

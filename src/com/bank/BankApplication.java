@@ -642,9 +642,9 @@ public class BankApplication {
         System.out.println("Card Type: " + account.getDebitCard().getCardType());
         System.out.println("Card Number: " + account.getDebitCard().getCardNumber());
         System.out.println("=========================");
-        for (Transaction transaction : account.getTransactionsList()){
+        account.getTransactionsList().forEach(transaction -> {
             printTransaction(transaction);
-        }
+        });
         System.out.println("=========================");
         System.out.println("Current Balance: " + account.getBalance() + "$");
         System.out.println("=========================");
