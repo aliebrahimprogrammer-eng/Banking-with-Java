@@ -181,7 +181,7 @@ The final data model is represented by these main entities:
 -   `DebitCard`
 -   `Transaction`
 
-See ERD.png for the final diagram.
+See image/ERD.png for the final diagram.
 
 ## Technologies
 
