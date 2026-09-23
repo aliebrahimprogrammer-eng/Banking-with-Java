@@ -136,17 +136,17 @@ Account account = findAccount(accountNumber).orElse(null);
 5.  Use the command-line menus to log in and use the banking features.
 
 - Note this is test accounts login info:
-- 
+  
 - Admin Account:
-- 
+ 
 - id:admin
 - password: admin 
-- 
+  
 - Customers Accounts:
-- 
+  
 - id:customer1
 - password: customer1 
-- 
+ 
 - id:customer2
 - password: customer2
 
