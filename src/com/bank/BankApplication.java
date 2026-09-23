@@ -160,6 +160,7 @@ public class BankApplication {
         String customerPassword = scanner.next();
         CustomerService customerService = new CustomerService();
         Customer customer = customerService.createCustomer(customerID,customerName,customerPassword);
+        loginService.addUser(customer);
         System.out.println("The customer is created successfully.");
 
         scanner.nextLine();
@@ -253,6 +254,7 @@ public class BankApplication {
         Banker banker = new Banker(id, name, hashedPassword);
 
         fileService.saveBanker(banker);
+        loginService.addUser(banker);
 
         System.out.println("Banker created successfully.");
     }

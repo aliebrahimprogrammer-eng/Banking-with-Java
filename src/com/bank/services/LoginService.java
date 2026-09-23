@@ -13,6 +13,7 @@ public class LoginService {
 
 
 
+
     public LoginService(List<User> userList) {
         passwordService = new PasswordService();
         this.userList = userList;
@@ -49,6 +50,10 @@ public class LoginService {
         }
         System.out.println("Customer not found.");
         return null;
+    }
+
+    public void addUser(User user) {
+        userList.add(user);
     }
 
 }
