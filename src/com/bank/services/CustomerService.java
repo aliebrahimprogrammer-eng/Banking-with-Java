@@ -23,13 +23,13 @@ public class CustomerService {
     }
 
     public CheckingAccount addCheckingAccount(Customer customer,String accountNumber, double balance){
-        CheckingAccount account = new CheckingAccount(customer.getUserId(),accountNumber,balance);
+        CheckingAccount account = new CheckingAccount(customer.getCustomerId(),accountNumber,balance);
         customer.setCheckingAccount(account);
         return account;
     }
 
     public SavingsAccount addSavingAccount(Customer customer,String accountNumber, double balance){
-        SavingsAccount account = new SavingsAccount(customer.getUserId(),accountNumber,balance);
+        SavingsAccount account = new SavingsAccount(customer.getCustomerId(),accountNumber,balance);
         customer.setSavingsAccount(account);
         return account;
     }
@@ -43,7 +43,7 @@ public class CustomerService {
     public void attachAccounts(List<Customer> customers, List<Account> accounts){
         for(Customer customer : customers){
             for(Account account : accounts){
-                if(customer.getUserId().equals(account.getCustomerId())){
+                if(customer.getCustomerId().equals(account.getCustomerId())){
                     if(account instanceof CheckingAccount){
                         customer.setCheckingAccount((CheckingAccount)account);
                     }

@@ -22,7 +22,7 @@ public class LoginService {
     public User login (String customerId, String password){
         String hashedPassword = passwordService.hashPassword(password);
         for (User user : userList) {
-            if (user.getUserId().equals(customerId)) {
+            if (user.getCustomerId().equals(customerId)) {
                 if (user.getLockedUntil() != null) {
                     if (LocalDateTime.now().isBefore(user.getLockedUntil())) {
                         System.out.println("Account is temporary locked until " + user.getLockedUntil() + ", Please try again later");

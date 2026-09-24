@@ -4,26 +4,26 @@ import java.time.LocalDateTime;
 
 public abstract class User {
 
-    private String userId;
+    private String customerId;
     private String name;
     private String password;
     private int failedLoginAttempts;
     private LocalDateTime lockedUntil;
 
-    public User(String userId, String name, String password) {
-        this.userId = userId;
+    public User(String customerId, String name, String password) {
+        this.customerId = customerId;
         this.name = name;
         this.password = password;
         failedLoginAttempts = 0;
         lockedUntil = null;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getCustomerId() {
+        return customerId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
     }
 
     public String getName() {

@@ -7,8 +7,8 @@ public class Customer extends User {
     private SavingsAccount savingsAccount;
 
     //constructor
-    public Customer(String userId, String name, String password) {
-        super(userId, name, password);
+    public Customer(String customerId, String name, String password) {
+        super(customerId, name, password);
     }
 
     //getters and setters
