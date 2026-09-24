@@ -111,17 +111,18 @@ public class BankService implements ITransactionOperations {
                 return;
             }
             boolean ownAccountTransfer = fromAccount.getCustomerId().equals(toAccount.getCustomerId());
-            if(ownAccountTransfer){
-                if (!card.canTransferToOwnAccount(amount)){
+            if(ownAccountTransfer) {
+                if (!card.canTransferToOwnAccount(amount)) {
                     System.out.println("Daily own-account transfer limit exceeded.");
                     return;
-                }else{
+                }
+            }else{
                     if (!card.canTransfer(amount)){
                         System.out.println("Daily transfer limit exceeded.");
                         return;
                     }
-                }
             }
+
 
             try {
                 int transactionCountBeforeOperationFrom = fromAccount.getTransactionsList().size();
