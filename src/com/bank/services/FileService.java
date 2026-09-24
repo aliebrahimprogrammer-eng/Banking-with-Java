@@ -206,8 +206,8 @@ public class FileService {
             while ((line = reader.readLine()) != null){
                 String[] parts = line.split(",");
                 String customerId = parts[0];
-                if (customer.getCustomerId().equals(customerId)){
-                    line = customer.getCustomerId() +","+
+                if (customer.getUserId().equals(customerId)){
+                    line = customer.getUserId() +","+
                             customer.getName() +","+
                             customer.getPassword();
                 }
@@ -229,7 +229,7 @@ public class FileService {
         try {
             FileWriter writer = new FileWriter(bankersFile, true);
             writer.write(
-                    banker.getCustomerId() + ","
+                    banker.getUserId() + ","
                             + banker.getName() + ","
                             + banker.getPassword() + "\n"
             );

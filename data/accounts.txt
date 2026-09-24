@@ -1,4 +1,4 @@
-h3214,abcd1234,Checking,30.0,true,0,111111,Mastercard Platinum
+h3214,abcd1234,Checking,355.0,true,0,111111,Mastercard Platinum
 h3214,abcd12345,Savings,1399.0,true,0,111111,Mastercard
 ali,1234,Checking,290.0,true,0,111111,Mastercard Platinum
 ali,4321,Savings,-444.0,false,2,111111,Mastercard
@@ -6,8 +6,8 @@ qqq,weqweqwe,Checking,45.0,true,0,111111,Mastercard Platinum
 asf,safe32,Savings,34.0,true,0,111111,Mastercard
 asfa,asdasd,Checking,45.0,true,0,111111,Mastercard Platinum
 asfa,efwewe,Savings,67.0,true,0,111111,Mastercard
-1,qweqwe22,Checking,52354.0,true,0,1234124,Mastercard Platinum
-1,wqdqw342,Savings,3.1512412E7,true,0,14124125125,Mastercard Titanium
+1,qweqwe22,Checking,52029.0,true,0,1234124,Mastercard Platinum
+1,wqdqw342,Savings,3.1512736E7,true,0,14124125125,Mastercard Titanium
 4,wefwet4,Checking,2.3523547E7,true,0,342342,Mastercard Platinum
 4,qwertq3,Savings,3423.0,true,0,32423525,Mastercard Titanium
 qq,qwerqw23,Checking,324.0,true,0,234235,Mastercard Titanium
